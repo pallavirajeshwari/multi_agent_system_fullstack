@@ -1,8 +1,5 @@
 class PlannerAgent:
-    """
-    Coordinates tasks between agents based on the user goal.
-    Determines a sequence of actions (launch, weather, risk analysis) and executes them.
-    """
+ 
     def __init__(self, weather_agent, analysis_agent, launch_agent):
         self.weather_agent = weather_agent
         self.analysis_agent = analysis_agent
