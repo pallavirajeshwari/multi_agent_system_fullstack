@@ -2,8 +2,9 @@ import requests
 
 class LaunchAgent:
     """
-    Fetches next launch data from the SpaceX API.
+    Fetches the next SpaceX launch data using the SpaceX API.
     """
+
     def get_next_launch(self) -> dict:
         try:
             response = requests.get("https://api.spacexdata.com/v4/launches/next")
@@ -15,7 +16,9 @@ class LaunchAgent:
                 "date": launch.get("date_utc", "Unknown"),
                 "location": launch.get("launchpad", "5e9e4502f509094188566f88")  # Default launchpad ID
             }
-        except Exception as e:
+
+        except requests.exceptions.RequestException as e:
+            print(f"[LaunchAgent Error] Failed to fetch launch data: {e}")
             return {
                 "name": "Unknown",
                 "date": "Unknown",
