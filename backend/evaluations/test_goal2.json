@@ -1,0 +1,4 @@
+{
+  "goal": "Check weather at the launch site.",
+  "expected_output": "low"
+}
