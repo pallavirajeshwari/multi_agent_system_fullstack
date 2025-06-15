@@ -1,3 +1,4 @@
+import os
 import requests
 
 class LaunchAgent:
@@ -6,25 +7,25 @@ class LaunchAgent:
     """
     def get_next_launch(self) -> dict:
         try:
-            # Get launch info
+            # Get next launch info
             response = requests.get("https://api.spacexdata.com/v4/launches/next")
             response.raise_for_status()
             launch = response.json()
 
-            # Get launchpad info to resolve location
+            # Get launchpad info to resolve city name
             launchpad_id = launch.get("launchpad", "")
-            location = self.resolve_launchpad_location(launchpad_id)
+            location_name = self.resolve_launchpad_location(launchpad_id)
 
             return {
                 "name": launch.get("name", "Unknown"),
                 "date": launch.get("date_utc", "Unknown"),
-                "location": location or "Cape Canaveral"
+                "location": location_name
             }
         except Exception as e:
             return {
                 "name": "Unknown",
                 "date": "Unknown",
-                "location": "Cape Canaveral",
+                "location": "Unknown",
                 "error": str(e)
             }
 
@@ -33,6 +34,7 @@ class LaunchAgent:
             response = requests.get(f"https://api.spacexdata.com/v4/launchpads/{launchpad_id}")
             response.raise_for_status()
             launchpad = response.json()
+            # Return a real-world city name that OpenWeatherMap can resolve
             return launchpad.get("locality", "Cape Canaveral")
         except:
             return "Cape Canaveral"
@@ -44,6 +46,8 @@ class WeatherAgent:
     """
     def __init__(self):
         self.api_key = os.getenv("OPENWEATHER_API_KEY")
+        if not self.api_key:
+            raise ValueError("OPENWEATHER_API_KEY environment variable is not set.")
 
     def get_weather_for_location(self, location_name: str) -> dict:
         try:
