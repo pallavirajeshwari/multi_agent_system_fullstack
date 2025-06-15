@@ -26,21 +26,22 @@ class PlannerAgent:
 
         for step in steps:
             if step == "get_launch":
-                launch_data = self.launch_agent.get_next_launch()
+                launch_data = self.launch_agent.get_launch()
                 result["launch"] = launch_data
 
             elif step == "get_weather":
                 if not launch_data:
-                    launch_data = self.launch_agent.get_next_launch()
+                    launch_data = self.launch_agent.get_launch()
                 weather_data = self.weather_agent.get_weather_for_location(launch_data["location"])
                 result["weather"] = weather_data
 
             elif step == "analyze_risk":
                 if not weather_data:
                     if not launch_data:
-                        launch_data = self.launch_agent.get_next_launch()
+                        launch_data = self.launch_agent.get_launch()
                     weather_data = self.weather_agent.get_weather_for_location(launch_data["location"])
                 risk_summary = self.analysis_agent.analyze_risk(weather_data)
                 result["risk_analysis"] = risk_summary
 
         return result
+
