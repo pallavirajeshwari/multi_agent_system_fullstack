@@ -2,6 +2,7 @@ class AnalysisAgent:
     """
     Assesses launch delay risk based on weather conditions.
     """
+
     def analyze(self, weather: dict) -> dict:
         forecast = weather.get("forecast", {})
         precip = forecast.get("precipitation", 0)
@@ -10,6 +11,7 @@ class AnalysisAgent:
         risk = "Low"
         reasons = []
 
+        # Evaluate precipitation risk
         if precip > 50:
             risk = "High"
             reasons.append(f"High precipitation probability: {precip}%")
@@ -17,6 +19,7 @@ class AnalysisAgent:
             risk = "Medium"
             reasons.append(f"Moderate precipitation probability: {precip}%")
 
+        # Evaluate wind risk (escalate only if not already High)
         if wind > 40:
             risk = "High"
             reasons.append(f"High wind speed: {wind} km/h")
@@ -26,8 +29,8 @@ class AnalysisAgent:
 
         return {
             "risk": risk,
-            "reasons": reasons or ["Weather conditions appear favorable."]
+            "reasons": reasons if reasons else ["Weather conditions appear favorable."]
         }
 
-
+    # Alias for compatibility
     analyze_risk = analyze
