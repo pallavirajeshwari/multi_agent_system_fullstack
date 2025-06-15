@@ -4,7 +4,7 @@ class LaunchAgent:
     """
     Fetches next launch data from the SpaceX API.
     """
-    def get_launch(self) -> dict:
+    def get_next_launch(self) -> dict:
         try:
             response = requests.get("https://api.spacexdata.com/v4/launches/next")
             response.raise_for_status()
