@@ -1,13 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from main import run_goal  # Make sure main.py has this function
+from main import run_goal  
 import os
 import logging
 
-# Setup logging
 logging.basicConfig(level=logging.INFO)
 
-# Initialize app
 app = Flask(__name__)
 CORS(app)
 
@@ -17,7 +15,6 @@ def home():
 
 @app.route("/api/execute", methods=["POST"])
 def execute_goal():
-    # Ensure the request has JSON data
     data = request.get_json(silent=True)
     if not data:
         return jsonify({"error": "Invalid JSON or missing Content-Type: application/json"}), 400
